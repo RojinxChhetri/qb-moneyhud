@@ -1,4 +1,3 @@
-```markdown
 # qb-moneyhud
 
 qb-moneyhud is a dynamic money HUD resource for the QBCore framework in FiveM. It displays your current cash and bank balances on-screen with smooth animations and auto-updates when your money changes. Players can also check their balances using the `/cash` and `/bank` commands.
