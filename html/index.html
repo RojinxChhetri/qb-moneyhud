@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Money HUD</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+      font-family: 'Oswald', sans-serif;
+    }
+    
+    .moneyHud {
+      position: absolute;
+      right: 2%;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .moneyHud.visible {
+      opacity: 1;
+    }
+    
+    #bankHud {
+      top: 5%;
+      height: 35px;
+    }
+    #cashHud {
+      top: 13%;
+      height: 30px;
+    }
+    
+    .icon {
+      font-size: 26px;
+      margin-right: 10px;
+      padding: 0;
+      margin-bottom: 10px;
+      margin-left: 0;
+    }
+    
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    
+    .main-amount {
+      font-size: 22px;
+      line-height: 28px;
+    }
+    
+    .diff-amount {
+      font-size: 18px;
+      line-height: 22px;
+      margin-top: 2px;
+      opacity: 0;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeOutUp {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bank HUD -->
+  <div id="bankHud" class="moneyHud">
+    <div class="icon">💳</div>
+    <div class="info">
+      <div id="bankBalance" class="main-amount"></div>
+      <div id="bankDiff" class="diff-amount"></div>
+    </div>
+  </div>
+
+  <!-- Cash HUD -->
+  <div id="cashHud" class="moneyHud">
+    <div class="info">
+      <div id="cashBalance" class="main-amount"></div>
+      <div id="cashDiff" class="diff-amount"></div>
+    </div>
+  </div>
+
+  <script>
+    let bankVisible = false;
+    let cashVisible = false;
+    let bankFadeTimeout, cashFadeTimeout;
+    let bankDiffTimeout, cashDiffTimeout; // New timeouts for diff animations
+    const AUTO_FADE_DELAY = 5000; // milliseconds
+
+    function formatCurrency(amount) {
+      return Number(amount).toLocaleString();
+    }
+
+    function showBank(amount) {
+      const bankHud = document.getElementById('bankHud');
+      const bankBalance = document.getElementById('bankBalance');
+      clearTimeout(bankFadeTimeout);
+      bankBalance.textContent = '$ ' + formatCurrency(amount);
+      bankHud.classList.add('visible');
+      bankVisible = true;
+      bankFadeTimeout = setTimeout(() => {
+        bankHud.classList.remove('visible');
+        bankVisible = false;
+      }, AUTO_FADE_DELAY);
+    }
+
+    function showCash(amount) {
+      const cashHud = document.getElementById('cashHud');
+      const cashBalance = document.getElementById('cashBalance');
+      clearTimeout(cashFadeTimeout);
+      cashBalance.textContent = '$ ' + formatCurrency(amount);
+      cashHud.classList.add('visible');
+      cashVisible = true;
+      cashFadeTimeout = setTimeout(() => {
+        cashHud.classList.remove('visible');
+        cashVisible = false;
+      }, AUTO_FADE_DELAY);
+    }
+
+    function updateBank(newAmount, diff) {
+      const bankHud = document.getElementById('bankHud');
+      const bankBalanceEl = document.getElementById('bankBalance');
+      const bankDiffEl = document.getElementById('bankDiff');
+
+      // Make sure the HUD is visible
+      if (!bankVisible) {
+        bankHud.classList.add('visible');
+        bankVisible = true;
+      }
+      bankBalanceEl.textContent = '$ ' + formatCurrency(newAmount);
+
+      // Clear previous diff animation timeouts and reset the animation
+      clearTimeout(bankDiffTimeout);
+      bankDiffEl.style.animation = 'none';
+      void bankDiffEl.offsetWidth; // Force reflow to reset CSS animation
+
+      if (diff !== 0) {
+        const sign = diff > 0 ? '+' : '';
+        bankDiffEl.style.color = diff > 0 ? 'limegreen' : 'red';
+        bankDiffEl.textContent = sign + formatCurrency(diff);
+        bankDiffEl.style.opacity = '1';
+        bankDiffEl.style.animation = 'fadeInUp 0.4s forwards';
+        bankDiffTimeout = setTimeout(() => {
+          bankDiffEl.style.animation = 'fadeOutUp 0.4s forwards';
+          bankDiffTimeout = setTimeout(() => {
+            bankDiffEl.style.opacity = '0';
+            bankDiffEl.textContent = '';
+          }, 400);
+        }, 2000);
+      }
+
+      clearTimeout(bankFadeTimeout);
+      bankFadeTimeout = setTimeout(() => {
+        bankHud.classList.remove('visible');
+        bankVisible = false;
+      }, AUTO_FADE_DELAY);
+    }
+
+    function updateCash(newAmount, diff) {
+      const cashHud = document.getElementById('cashHud');
+      const cashBalanceEl = document.getElementById('cashBalance');
+      const cashDiffEl = document.getElementById('cashDiff');
+
+      if (!cashVisible) {
+        cashHud.classList.add('visible');
+        cashVisible = true;
+      }
+      cashBalanceEl.textContent = '$ ' + formatCurrency(newAmount);
+
+      clearTimeout(cashDiffTimeout);
+      cashDiffEl.style.animation = 'none';
+      void cashDiffEl.offsetWidth;
+
+      if (diff !== 0) {
+        const sign = diff > 0 ? '+' : '';
+        cashDiffEl.style.color = diff > 0 ? 'limegreen' : 'red';
+        cashDiffEl.textContent = sign + formatCurrency(diff);
+        cashDiffEl.style.opacity = '1';
+        cashDiffEl.style.animation = 'fadeInUp 0.4s forwards';
+        cashDiffTimeout = setTimeout(() => {
+          cashDiffEl.style.animation = 'fadeOutUp 0.4s forwards';
+          cashDiffTimeout = setTimeout(() => {
+            cashDiffEl.style.opacity = '0';
+            cashDiffEl.textContent = '';
+          }, 400);
+        }, 2000);
+      }
+
+      clearTimeout(cashFadeTimeout);
+      cashFadeTimeout = setTimeout(() => {
+        cashHud.classList.remove('visible');
+        cashVisible = false;
+      }, AUTO_FADE_DELAY);
+    }
+
+    // Listen for messages from the client script.
+    window.addEventListener('message', function (event) {
+      const data = event.data;
+      if (data.action === 'show') {
+        if (data.type === 'cash') {
+          showCash(data.cash);
+        } else if (data.type === 'bank') {
+          showBank(data.bank);
+        }
+      } else if (data.action === 'updatemoney') {
+        if (data.type === 'cash') {
+          // data.amount holds the change value; if data.minus is true, it’s negative.
+          let diff = data.amount;
+          if (data.minus) diff = -diff;
+          updateCash(data.cash, diff);
+        } else if (data.type === 'bank') {
+          let diff = data.amount;
+          if (data.minus) diff = -diff;
+          updateBank(data.bank, diff);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
