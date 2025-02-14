@@ -28,7 +28,7 @@ qb-moneyhud is a dynamic money HUD resource for the QBCore framework in FiveM. I
 
 <br>
 
-![alt text](https://cdn.discordapp.com/attachments/873793727041253387/1337006572722716682/cash.png?ex=67a5dfe7&is=67a48e67&hm=e7647133a7524b9399ac691c76bce34d4d1183a5556faba3ba0624f9573efbc4&)
+![alt text](https://cdn.discordapp.com/attachments/873793727041253387/1337006572722716682/cash.png?ex=67afc327&is=67ae71a7&hm=ebed3e42c4e448bffb4075b1faed092ec1fbda0ff8c3bd8a20435bd974108d17&)
 
 ## Installation
 
