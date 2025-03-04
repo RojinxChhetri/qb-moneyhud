@@ -20,7 +20,7 @@ qb-moneyhud is a dynamic money HUD resource for the QBCore framework in FiveM. I
 
 - **Bank**
 
-![(https://user-images.githubusercontent.com/91661118/171066080-6bc11bb8-7cde-460b-8d73-bbc329644c83.gif)](https://media.discordapp.net/attachments/873793727041253387/1337006572311810108/bank.png?ex=67a5dfe7&is=67a48e67&hm=54c83e660b1fd0f992a793686f55cd560596c93dcae161d2ac5b26a9543c9eb2&=&format=webp&quality=lossless)
+![Image-bank](https://cdn.discordapp.com/attachments/873793727041253387/1337006572311810108/bank.png?ex=67c8cfa7&is=67c77e27&hm=2cd77e59b371bb79d699aa1802e1010fcf9b34cf9328c66b6cfdce0485c3bdcb&)
 
 <br>
 
@@ -28,7 +28,8 @@ qb-moneyhud is a dynamic money HUD resource for the QBCore framework in FiveM. I
 
 <br>
 
-![alt text](https://cdn.discordapp.com/attachments/873793727041253387/1337006572722716682/cash.png?ex=67afc327&is=67ae71a7&hm=ebed3e42c4e448bffb4075b1faed092ec1fbda0ff8c3bd8a20435bd974108d17&)
+![Image-cash](https://cdn.discordapp.com/attachments/873793727041253387/1337006572722716682/cash.png?ex=67c8cfa7&is=67c77e27&hm=5c1d3fa323f5eaa66cbe3cb92aad8b24b1d9d71d1cbb68a4e54c86559748b253&)
+
 
 ## Installation
 
